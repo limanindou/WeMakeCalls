@@ -1,0 +1,22 @@
+<div class="active-call">
+  <div class="call-card">
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span class="live-text">LIVE CALL</span>
+    </div>
+
+    <div class="agent-block">
+      <div class="avatar">{{ call().agentName.charAt(0) }}</div>
+      <span class="name">{{ call().agentName }}</span>
+    </div>
+
+    <div class="timer-block">
+      <span class="timer-label">Duration</span>
+      <span class="timer-value">{{ formattedTime() }}</span>
+    </div>
+
+    <button class="end-btn" (click)="endCall.emit()">
+      End Call ✕
+    </button>
+  </div>
+</div>

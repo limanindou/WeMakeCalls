@@ -1,0 +1,19 @@
+<p-table [value]="agents()" [loading]="loading()" styleClass="p-datatable-sm">
+  <ng-template #header>
+    <tr>
+      <th>Agent ID</th>
+      <th>Name</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-agent>
+    <tr>
+      <td>{{ agent.agentId }}</td>
+      <td>{{ agent.name }}</td>
+      <td><p-tag value="Available" severity="success" /></td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr><td colspan="3" class="text-center">No agents found</td></tr>
+  </ng-template>
+</p-table>

@@ -1,0 +1,34 @@
+# Default ignored files
+# IDE
+/.idea/
+/.idea_modules/
+/shelf/
+/workspace.xml
+*.iml
+
+# Java / Maven (call-service)
+call-service/target/
+*.class
+*.jar
+
+# Node / Angular (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Python (ml-service)
+ml-service/__pycache__/
+ml-service/.venv/
+ml-service/*.egg-info/
+ml-service/.hypothesis/
+
+# Environment
+.env
+*.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kiro
+.jqwik-database

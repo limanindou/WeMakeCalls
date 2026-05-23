@@ -1,0 +1,34 @@
+<p-dialog
+  header="Call Feedback"
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '400px' }"
+>
+  <div class="feedback-form">
+    <div class="field">
+      <label>Hangup Reason</label>
+      <p-select
+        [options]="hangupReasons"
+        [(ngModel)]="selectedReason"
+        placeholder="Select a reason"
+        [style]="{ width: '100%' }"
+      />
+    </div>
+
+    <div class="field">
+      <label>Agent Rating</label>
+      <p-rating [(ngModel)]="agentRating" />
+    </div>
+  </div>
+
+  <ng-template #footer>
+    <p-button
+      label="Submit"
+      icon="pi pi-check"
+      (onClick)="submit()"
+      [disabled]="!selectedReason() || agentRating() < 1"
+      severity="success"
+    />
+  </ng-template>
+</p-dialog>

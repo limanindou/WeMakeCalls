@@ -1,0 +1,5 @@
+target/
+.git
+.kiro
+.jqwik-database
+*.class

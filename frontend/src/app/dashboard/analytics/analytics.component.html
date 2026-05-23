@@ -1,0 +1,19 @@
+<div class="analytics-grid">
+  @if (durationData()) {
+    <p-card header="Call Duration Distribution">
+      <p-chart type="bar" [data]="durationData()" [options]="chartOptions" height="300" />
+    </p-card>
+  }
+
+  @if (hangupData()) {
+    <p-card header="Hangup Reasons">
+      <p-chart type="doughnut" [data]="hangupData()" [options]="pieOptions" height="300" />
+    </p-card>
+  }
+
+  @if (ratingData()) {
+    <p-card header="Agent Ratings">
+      <p-chart type="bar" [data]="ratingData()" [options]="chartOptions" height="300" />
+    </p-card>
+  }
+</div>

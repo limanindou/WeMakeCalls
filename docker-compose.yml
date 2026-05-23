@@ -1,0 +1,114 @@
+services:
+  # NoSQL Layer - MongoDB
+  mongodb:
+    image: mongo:6.0
+    container_name: database_mongodb
+    restart: always
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  # Relational Database - PostgreSQL
+  postgresql:
+    image: postgres:15-alpine
+    container_name: database_postgresql
+    restart: always
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+  # MongoDB UI - Mongo Express
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: mongo_express
+    restart: always
+    ports:
+      - "${MONGO_EXPRESS_PORT}:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongodb
+
+  # PostgreSQL UI - pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "${PGADMIN_PORT}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgresql
+
+  # Machine Learning Service - API
+  ml-service:
+    build: ./ml-service
+    container_name: ml_service
+    restart: always
+    ports:
+      - "${ML_SERVICE_PORT}:8000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}
+    depends_on:
+      - mongodb
+      - postgresql
+
+  # ML Dashboard - Real-time forecasting chart (updates every 1 second)
+  ml-dashboard:
+    build: ./ml-service
+    container_name: ml_dashboard
+    restart: always
+    ports:
+      - "8050:8050"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}
+      CALL_SERVICE_URL: http://call-service:5000
+      MONGO_URI: mongodb://mongodb:27017
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+    command: ["sh", "-c", "uv run python entrypoints/inference_loop.py & uv run python entrypoints/dashboard.py"]
+    depends_on:
+      - mongodb
+      - postgresql
+      - ml-service
+
+  # Java Backend - Call Service
+  call-service:
+    build: ./call-service
+    container_name: call_service
+    restart: always
+    ports:
+      - "${CALL_SERVICE_PORT}:5000"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/call-service
+      SPRING_MONGODB_URI: mongodb://mongodb:27017/call-service
+    depends_on:
+      - mongodb
+      - postgresql
+
+  # Frontend - Angular App
+  frontend-app:
+    build: ./frontend
+    container_name: frontend_client
+    restart: always
+    ports:
+      - "${FRONTEND_PORT}:80"
+    depends_on:
+      - call-service
+
+volumes:
+  mongodb_data:
+  postgresql_data:
+  pgadmin_data:

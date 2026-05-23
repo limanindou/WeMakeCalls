@@ -1,0 +1,17 @@
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    color: #e0e0e0;
+    font-weight: 500;
+  }
+}

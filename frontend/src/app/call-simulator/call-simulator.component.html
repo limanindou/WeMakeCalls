@@ -1,0 +1,44 @@
+<p-toast />
+
+<div class="call-simulator">
+  @if (!isCallActive() && !showFeedbackDialog()) {
+    <div class="hero-section">
+      <div class="badge">Call Simulation Platform</div>
+      <h1 class="hero-title">Start a call.<br><em>Track in real-time.</em></h1>
+      <p class="hero-subtitle">Select an available agent, initiate a simulated call, and monitor the live timer via WebSocket.</p>
+    </div>
+
+    <app-agent-list [agents]="availableAgents()" />
+
+    <div class="action-section">
+      <button
+        class="start-btn"
+        (click)="startCall()"
+        [disabled]="availableAgents().length === 0 || loading()"
+      >
+        @if (loading()) {
+          Starting...
+        } @else {
+          Start Call →
+        }
+      </button>
+      @if (availableAgents().length === 0) {
+        <p class="hint-text">No agents available right now. Try again later.</p>
+      }
+    </div>
+  }
+
+  @if (isCallActive()) {
+    <app-active-call
+      [call]="activeCall()!"
+      [elapsedSeconds]="elapsedSeconds()"
+      (endCall)="endCall()"
+    />
+  }
+
+  <app-feedback-dialog
+    [(visible)]="showFeedbackDialog"
+    [callId]="activeCall()?.callId ?? ''"
+    (feedbackSubmitted)="onFeedbackSubmitted($event)"
+  />
+</div>

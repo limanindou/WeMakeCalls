@@ -1,0 +1,126 @@
+.call-simulator {
+  position: relative;
+  min-height: calc(100vh - 68px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 5% 60px;
+  overflow: hidden;
+}
+
+// Radial glow background
+.call-simulator::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(57, 255, 122, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-section {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-subtle);
+  border: 1px solid var(--border-bright);
+  color: var(--green-primary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--green-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green-primary);
+    animation: pulse 2s ease infinite;
+  }
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text-white);
+  margin-bottom: 20px;
+
+  em {
+    font-style: normal;
+    color: var(--green-primary);
+    text-shadow: 0 0 40px rgba(57, 255, 122, 0.4);
+  }
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.action-section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.start-btn {
+  background: var(--green-primary);
+  color: var(--bg-deep);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 0 24px rgba(57, 255, 122, 0.2);
+
+  &:hover:not(:disabled) {
+    background: #5effaa;
+    transform: translateY(-2px);
+    box-shadow: 0 0 36px rgba(57, 255, 122, 0.35);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.hint-text {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}

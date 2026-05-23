@@ -1,0 +1,17 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: call-service
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/call-service
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/wemakecalls
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+sync:
+  cron-interval: 600000

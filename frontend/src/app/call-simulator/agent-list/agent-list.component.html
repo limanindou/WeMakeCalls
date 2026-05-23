@@ -1,0 +1,16 @@
+<div class="agents-section">
+  @if (agents().length > 0) {
+    <p class="section-label">Available Agents</p>
+    <div class="agents-grid">
+      @for (agent of agents(); track agent.agentId) {
+        <div class="agent-card">
+          <div class="agent-avatar">{{ agent.name.charAt(0) }}</div>
+          <div class="agent-info">
+            <span class="agent-name">{{ agent.name }}</span>
+            <span class="agent-status"><span class="dot"></span> Online</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

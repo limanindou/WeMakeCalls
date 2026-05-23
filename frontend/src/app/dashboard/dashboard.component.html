@@ -1,0 +1,23 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <p class="section-label">Dashboard</p>
+    <h1 class="dashboard-title">Monitor & <em>Manage</em></h1>
+    <p class="dashboard-sub">View call history, manage agents, and track performance analytics.</p>
+  </div>
+
+  <div class="tab-nav">
+    <a routerLink="./history" routerLinkActive="active" class="tab-link">
+      <span class="tab-icon">📋</span> Call History
+    </a>
+    <a routerLink="./agents" routerLinkActive="active" class="tab-link">
+      <span class="tab-icon">👥</span> Agents
+    </a>
+    <a routerLink="./analytics" routerLinkActive="active" class="tab-link">
+      <span class="tab-icon">📊</span> Analytics
+    </a>
+  </div>
+
+  <div class="dashboard-content">
+    <router-outlet />
+  </div>
+</div>

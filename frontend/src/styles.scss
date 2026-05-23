@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+:root {
+  --bg-deep: #050f06;
+  --bg-dark: #0a1a0b;
+  --bg-card: #0d1f0e;
+  --green-primary: #39ff7a;
+  --green-mid: #1db954;
+  --green-glow: rgba(57, 255, 122, 0.15);
+  --green-subtle: rgba(57, 255, 122, 0.07);
+  --text-white: #f2f9f3;
+  --text-muted: #7a9e7e;
+  --text-dim: #3d5c41;
+  --border: rgba(57, 255, 122, 0.12);
+  --border-bright: rgba(57, 255, 122, 0.3);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-white);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+
+  // Diamond/ceiling tile pattern overlay (like lime_black_ceiling_pattern)
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(57,255,122,0.06)' stroke-width='0.5'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z' fill='none' stroke='rgba(57,255,122,0.035)' stroke-width='0.5'/%3E%3Cpath d='M28 36 L56 52 L56 84 L28 100 L0 84 L0 52 Z' fill='none' stroke='rgba(57,255,122,0.035)' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 60px 60px, 56px 100px;
+    mask-image: radial-gradient(ellipse 120% 90% at 50% 30%, black 0%, transparent 75%);
+  }
+}
+
+// PrimeNG overrides
+.p-component {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.p-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.p-button {
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border-color: var(--border);
+  font-weight: 500;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background: var(--bg-dark);
+  color: var(--text-white);
+  border-color: var(--border);
+
+  &:hover {
+    background: var(--bg-card);
+  }
+}
+
+.p-dialog {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.p-dialog .p-dialog-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-white);
+}
+
+.p-dialog .p-dialog-content {
+  background: var(--bg-card);
+  color: var(--text-white);
+}
+
+.p-dialog .p-dialog-footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+}
+
+.p-tabmenu .p-tabmenu-nav {
+  background: transparent;
+  border-color: var(--border);
+}
+
+.p-toast {
+  z-index: 9999;
+}
+
+// Scrollbar
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+
+.text-center { text-align: center; }

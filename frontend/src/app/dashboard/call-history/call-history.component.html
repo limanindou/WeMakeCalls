@@ -1,0 +1,33 @@
+<p-table
+  [value]="calls()"
+  [loading]="loading()"
+  [paginator]="true"
+  [rows]="10"
+  [sortField]="'callStarted'"
+  [sortOrder]="-1"
+  styleClass="p-datatable-sm"
+>
+  <ng-template #header>
+    <tr>
+      <th pSortableColumn="agentName">Agent <p-sortIcon field="agentName" /></th>
+      <th pSortableColumn="callStarted">Started <p-sortIcon field="callStarted" /></th>
+      <th pSortableColumn="durationSeconds">Duration <p-sortIcon field="durationSeconds" /></th>
+      <th>Hangup Reason</th>
+      <th pSortableColumn="agentRating">Rating <p-sortIcon field="agentRating" /></th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-call>
+    <tr>
+      <td>{{ call.agentName }}</td>
+      <td>{{ call.callStarted | date:'short' }}</td>
+      <td>{{ call.durationSeconds ? call.durationSeconds + 's' : '-' }}</td>
+      <td>{{ call.hangupReason || '-' }}</td>
+      <td>{{ call.agentRating ? '⭐'.repeat(call.agentRating) : '-' }}</td>
+      <td><p-tag [value]="call.status" [severity]="getSeverity(call.status)" /></td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr><td colspan="6" class="text-center">No call history</td></tr>
+  </ng-template>
+</p-table>

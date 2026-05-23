@@ -1,0 +1,20 @@
+raw_call_logs:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/call_history_${year}.csv
+
+feature_vectors:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/features.parquet
+  load_args:
+    engine: pyarrow
+  save_args:
+    engine: pyarrow
+
+model_artifact:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model.pkl
+  backend: joblib
+
+prediction_output:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/predictions.parquet

@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: call-service
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/wemakecalls
+    username: postgres
+    password: postgres
