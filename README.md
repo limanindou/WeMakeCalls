@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # WeMakeCalls — AI-Powered Call Center Platform
 
 A production-grade call center simulation platform with real-time ML forecasting.
@@ -75,3 +76,6 @@ mongosh mongodb://localhost:27017/call-service seed-agents.js
 - **Frontend**: Angular 21, PrimeNG, STOMP WebSocket
 - **Infrastructure**: Docker, Docker Compose
 "# WeMakeCalls" 
+=======
+# WeMakeCalls
+>>>>>>> 53cb9d1461e729bb5b5aadc53cdcc10bb0194453
