@@ -1,11 +1,12 @@
 # Build + push frontend image + smoke test
 name: CD - Deploy Frontend (Angular)
 
-on:
+"on":
   push:
     branches: [main, master]
     paths:
       - 'frontend/**'
+  workflow_dispatch:
 
 concurrency:
   group: cd-frontend-${{ github.ref }}

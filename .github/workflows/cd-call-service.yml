@@ -1,11 +1,12 @@
 # Build + push call-service image + smoke test
 name: CD - Deploy Call Service (Spring Boot)
 
-on:
+"on":
   push:
     branches: [main, master]
     paths:
       - 'call-service/**'
+  workflow_dispatch:
 
 concurrency:
   group: cd-call-service-${{ github.ref }}

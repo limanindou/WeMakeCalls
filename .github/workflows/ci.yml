@@ -1,9 +1,10 @@
 # Runs tests on every PR
 name: CI - Pull Request Validation
 
-on:
+"on":
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
 
 jobs:
   # =================================================================

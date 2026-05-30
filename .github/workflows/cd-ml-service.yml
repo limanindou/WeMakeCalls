@@ -1,11 +1,12 @@
 # Build + push ml-service image + smoke test
 name: CD - Deploy ML Service
 
-on:
+"on":
   push:
     branches: [main, master]
     paths:
       - 'ml-service/**'
+  workflow_dispatch:
 
 concurrency:
   group: cd-ml-${{ github.ref }}
