@@ -64,10 +64,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.REGISTRY_URL }}/call-service
+          images: ${{ secrets.REGISTRY_URL }}/${{ secrets.REGISTRY_USERNAME }}/wemakecalls
           tags: |
-            type=sha,format=long
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,prefix=call-service-,format=long
+            type=raw,value=call-service-latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and Push Docker Image
         if: steps.registry.outputs.enabled == 'true'

@@ -46,10 +46,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.REGISTRY_URL }}/ml-service
+          images: ${{ secrets.REGISTRY_URL }}/${{ secrets.REGISTRY_USERNAME }}/wemakecalls
           tags: |
-            type=sha,format=long
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,prefix=ml-service-,format=long
+            type=raw,value=ml-service-latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and Push Docker Image
         if: steps.registry.outputs.enabled == 'true'
