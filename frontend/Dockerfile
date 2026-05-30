@@ -14,3 +14,4 @@ RUN if [ -f /usr/share/nginx/html/index.csr.html ]; then cp /usr/share/nginx/htm
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
+

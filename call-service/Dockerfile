@@ -14,3 +14,4 @@ COPY --from=build /app/target/call-service-0.0.1-SNAPSHOT.jar call-service.jar
 EXPOSE 5000
 ENTRYPOINT ["java", "-Dspring.data.mongodb.uri=mongodb://mongodb:27017/call-service", "-Dspring.datasource.url=jdbc:postgresql://postgresql:5432/wemakecalls", "-jar", "call-service.jar"]
 
+

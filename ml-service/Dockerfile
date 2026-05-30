@@ -30,3 +30,4 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 --start-period=30s \
 # ENTRYPOINT: run startup_check.py first (validates DATABASE_URL),
 # then start Uvicorn on 0.0.0.0:8000
 ENTRYPOINT ["sh", "-c", "uv run python entrypoints/startup_check.py && uv run uvicorn entrypoints.api:app --host 0.0.0.0 --port 8000"]
+
