@@ -34,7 +34,7 @@
 │                │                           │                         │
 │                ▼                           ▼                         │
 │   ┌────────────────────┐     ┌─────────────────────────────────┐    │
-│   │  Java / Spring Boot│     │   C# / ASP.NET Core             │    │
+│   │  Java / Spring Boot│     │   Java / Spring boot          │    │
 │   │  ML Backend        │     │   Call Service                  │    │
 │   │  - Predictions API │     │   - Agent availability          │    │
 │   │  - ML scheduling   │     │   - Call session management     │    │
@@ -314,7 +314,6 @@ services:
   ml-service        # Python / Kedro / FastAPI  — port 8000
   ml-dashboard      # Dash (predicted vs actual)— port 8050
   java-backend      # Spring Boot               — port 8080
-  call-service      # C# ASP.NET Core           — port 5000
   frontend          # Angular (served by Nginx) — port 4200
   postgres          # PostgreSQL 16             — port 5432
   mongodb           # MongoDB 7                 — port 27017
