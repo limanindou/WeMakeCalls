@@ -72,12 +72,18 @@ services:
     restart: always
     ports:
       - "8050:8050"
+    entrypoint: ["sh", "-c", "uv run python entrypoints/inference_loop.py & uv run python entrypoints/dashboard.py"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8050/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}
       CALL_SERVICE_URL: http://call-service:5000
       MONGO_URI: mongodb://mongodb:27017
       MONGO_DB_NAME: ${MONGO_DB_NAME}
-    command: ["sh", "-c", "uv run python entrypoints/inference_loop.py & uv run python entrypoints/dashboard.py"]
     depends_on:
       - mongodb
       - postgresql

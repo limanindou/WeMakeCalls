@@ -1,4 +1,4 @@
-import { Component, input, output, model, signal } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -20,18 +20,30 @@ export class FeedbackDialogComponent {
   feedbackSubmitted = output<FeedbackRequest>();
 
   hangupReasons = HANGUP_REASONS.map(r => ({ label: r, value: r }));
-  selectedReason = signal<string>('');
-  agentRating = signal<number>(0);
+  selectedReason = '';
+  agentRating = 0;
+
+  constructor() {
+    effect(() => {
+      if (!this.visible()) {
+        this.resetForm();
+      }
+    });
+  }
 
   submit(): void {
-    if (!this.selectedReason() || this.agentRating() < 1) return;
+    if (!this.selectedReason || this.agentRating < 1) return;
 
     this.feedbackSubmitted.emit({
-      hangupReason: this.selectedReason(),
-      agentRating: this.agentRating()
+      hangupReason: this.selectedReason,
+      agentRating: this.agentRating
     });
 
-    this.selectedReason.set('');
-    this.agentRating.set(0);
+    this.resetForm();
+  }
+
+  private resetForm(): void {
+    this.selectedReason = '';
+    this.agentRating = 0;
   }
 }

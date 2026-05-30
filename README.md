@@ -1,81 +1,102 @@
-<<<<<<< HEAD
-# WeMakeCalls — AI-Powered Call Center Platform
+# WeMakeCalls
 
-A production-grade call center simulation platform with real-time ML forecasting.
+WeMakeCalls is a Docker-first call center simulation platform with a Spring Boot call service, a Python ML service, a live Dash forecast dashboard, and an Angular frontend.
 
-## Architecture
+## Start With Docker
 
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Frontend   │────▶│ Call Service  │────▶│   MongoDB   │
-│  (Angular)  │     │ (Spring Boot)│     │  (calls DB) │
-│  :4200      │     │    :5000     │     │   :27017    │
-└─────────────┘     └──────┬───────┘     └─────────────┘
-                           │
-                    ┌──────▼───────┐     ┌─────────────┐
-                    │  PostgreSQL  │◀────│  ML Service  │
-                    │  (analytics) │     │  (FastAPI)   │
-                    │    :5432     │     │    :8000     │
-                    └──────────────┘     └──────┬───────┘
-                                                │
-                                         ┌──────▼───────┐
-                                         │ ML Dashboard │
-                                         │   (Dash)     │
-                                         │    :8050     │
-                                         └──────────────┘
-```
+Prerequisites:
 
-## Services
+- Docker Desktop or Docker Engine with Docker Compose
+- Git
 
-| Service | Port | Description |
-|---------|------|-------------|
-| Frontend | 4200 | Angular app — call simulator + dashboard |
-| Call Service | 5000 | REST API + WebSocket for call management |
-| ML Service | 8000 | FastAPI — call volume prediction API |
-| ML Dashboard | 8050 | Real-time forecasting chart (updates every 1s) |
-| MongoDB | 27017 | Live call data storage |
-| PostgreSQL | 5432 | Analytics + synced call history |
-| Mongo Express | 8081 | MongoDB admin UI |
-| pgAdmin | 5050 | PostgreSQL admin UI |
-
-## Quick Start
+Run the full stack from the repository root:
 
 ```bash
-docker-compose up --build
+git clone https://github.com/your-org/WeMakeCalls.git
+cd WeMakeCalls
+docker compose up --build -d
 ```
 
-Then seed agents:
+Seed the agents collection after the containers are up:
+
+PowerShell:
+
+```powershell
+Get-Content .\seed-agents.js | docker exec -i database_mongodb mongosh call-service
+```
+
+bash or zsh:
+
 ```bash
-mongosh mongodb://localhost:27017/call-service seed-agents.js
+cat ./seed-agents.js | docker exec -i database_mongodb mongosh call-service
 ```
 
-## ML Model
+Confirm container status:
 
-**Problem**: Predict call volume for the next hour to optimize agent staffing.
+```bash
+docker compose ps
+```
 
-**Features**:
-- `calls_lag_1h`, `calls_lag_2h`, `calls_lag_24h`, `calls_lag_168h` — historical call counts
-- `hour_of_day`, `day_of_week`, `is_weekend`, `is_holiday` — temporal features
-- `rolling_avg_7d` — 7-day rolling average
-- `avg_duration_lag_1h`, `abandonment_rate_lag_1h` — quality metrics
+This startup path uses Docker only. You do not need local Java, Node.js, Python, MongoDB, or PostgreSQL installed to run the application.
 
-**Model**: CatBoost (gradient boosting)
+## Service URLs
 
-**Inference**: Runs every 1 second (simulating 1 hour per second) with results displayed on the real-time dashboard at http://localhost:8050
+Open these once `docker compose ps` shows the services are running:
 
-## Monitoring
+| Service | URL |
+|---|---|
+| Angular frontend | http://localhost:4200 |
+| Call service API | http://localhost:5000 |
+| ML API | http://localhost:8000 |
+| ML API docs | http://localhost:8000/docs |
+| ML dashboard | http://localhost:8050 |
+| Mongo Express | http://localhost:8081 |
+| pgAdmin | http://localhost:5050 |
 
-- `/health` — service health check
-- `/metrics` — prediction count, model status, uptime
-- `/model/info` — model metadata (type, trained_at, MAE, RMSE, MAPE)
+Notes:
+
+- On first startup, the ML dashboard can take up to a minute to finish booting.
+- PostgreSQL is exposed on host port `5433`.
+- MongoDB is exposed on host port `27017`.
+
+## What Starts
+
+`docker compose up --build -d` starts these services:
+
+| Service | Port | Purpose |
+|---|---|---|
+| `frontend-app` | 4200 | Angular UI for the simulator and dashboard views |
+| `call-service` | 5000 | Spring Boot API for calls, agents, and WebSocket updates |
+| `ml-service` | 8000 | FastAPI ML API |
+| `ml-dashboard` | 8050 | Dash app for live forecast vs actuals |
+| `mongodb` | 27017 | Operational call data |
+| `postgresql` | 5433 | Analytics and prediction storage |
+| `mongo-express` | 8081 | MongoDB admin UI |
+| `pgadmin` | 5050 | PostgreSQL admin UI |
+
+## First Check
+
+1. Open the Angular frontend at `http://localhost:4200`.
+2. Go to the call simulator and start a call.
+3. Confirm agents were seeded and a call can be assigned.
+4. Open the ML dashboard at `http://localhost:8050` and verify the live chart loads.
+
+## Stop The Stack
+
+```bash
+docker compose down
+```
+
+To remove containers and volumes for a full reset:
+
+```bash
+docker compose down -v
+```
 
 ## Tech Stack
 
-- **Backend**: Java 17, Spring Boot 4.0.6, MongoDB, PostgreSQL
-- **ML**: Python 3.12, CatBoost, FastAPI, Dash/Plotly
-- **Frontend**: Angular 21, PrimeNG, STOMP WebSocket
-- **Infrastructure**: Docker, Docker Compose
-"# WeMakeCalls" 
-=======
-# WeMakeCalls
->>>>>>> 53cb9d1461e729bb5b5aadc53cdcc10bb0194453
+- Frontend: Angular 21, PrimeNG
+- Call service: Java 17, Spring Boot 4, MongoDB, PostgreSQL
+- ML service: Python 3.12, FastAPI, Kedro, CatBoost
+- Dashboard: Dash, Plotly
+- Infrastructure: Docker, Docker Compose

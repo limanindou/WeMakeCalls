@@ -433,21 +433,53 @@ Raw call logs are aggregated by hour, then these features are created:
 ## Quick Start
 
 ```bash
+# Prerequisites:
+# - Git
+# - Docker Desktop (or Docker Engine + Docker Compose)
+
 # Clone the repo
 git clone https://github.com/your-org/WeMakeCalls.git
 cd WeMakeCalls
 
-# Start all services
-docker compose up
+# Build and start every service in the background
+docker compose up --build -d
 
-# Services available at:
-# Angular Dashboard     → http://localhost:4200
-# Spring Boot API       → http://localhost:8080
-# C# Call Service       → http://localhost:5000
-# Python ML API         → http://localhost:8000
-# ML API Docs (Swagger) → http://localhost:8000/docs
-# ML Dashboard (Dash)   → http://localhost:8050
-# pgAdmin               → http://localhost:5050
+# Seed the MongoDB agents collection from the bundled script (PowerShell)
+Get-Content .\seed-agents.js | docker exec -i database_mongodb mongosh call-service
+
+# Seed the MongoDB agents collection from the bundled script (bash/zsh)
+cat ./seed-agents.js | docker exec -i database_mongodb mongosh call-service
+
+# Optional: confirm that all containers are running
+docker compose ps
+```
+
+This startup path uses Docker only. You do not need a local Java, Python, Node, MongoDB, or PostgreSQL install to run the application.
+
+On the first startup, give the ML dashboard up to a minute to finish booting before opening `http://localhost:8050`.
+
+Open these URLs after `docker compose ps` shows the containers as running:
+
+| Service | URL |
+|---|---|
+| Angular frontend | `http://localhost:4200` |
+| Call service API | `http://localhost:5000` |
+| ML API | `http://localhost:8000` |
+| ML API docs | `http://localhost:8000/docs` |
+| ML dashboard | `http://localhost:8050` |
+| Mongo Express | `http://localhost:8081` |
+| pgAdmin | `http://localhost:5050` |
+
+Recommended first-use check:
+
+1. Open the Angular frontend and go to the call simulator.
+2. Start a call and confirm an agent is assigned.
+3. Open the ML dashboard and confirm the live chart loads.
+
+To stop the full stack:
+
+```bash
+docker compose down
 ```
 
 ---
