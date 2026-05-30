@@ -498,11 +498,11 @@ docker compose down
 
 ## Evaluation Metrics
 
-| Metric | Description |
-|---|---|
-| **MAE** | Mean Absolute Error — average prediction error in number of calls |
-| **RMSE** | Root Mean Squared Error — penalises large errors more |
-| **MAPE** | Mean Absolute Percentage Error — error as a percentage |
+| Metric | Descriptions                                                      |
+|---|-------------------------------------------------------------------|
+| **MAE** | Mean Absolute Error - average prediction error in number of calls |
+| **RMSE** | Root Mean Squared Error - penalises large errors more             |
+| **MAPE** | Mean Absolute Percentage Error — error as a percentage            |
 
 ---
 
