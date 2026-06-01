@@ -99,6 +99,20 @@ jobs:
         ports:
           - 27017:27017
 
+      postgresql:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: wemakecalls
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -116,6 +130,16 @@ jobs:
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Initialize PostgreSQL Schema
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d wemakecalls \
+            -f call-service/src/main/resources/schema-postgres.sql
+
       - name: Build Docker Image Locally
         run: docker build -t call-service:smoke ./call-service
 
@@ -125,6 +149,8 @@ jobs:
             --network host \
             -e SPRING_DATA_MONGODB_URI=mongodb://localhost:27017/call-service \
             -e SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/wemakecalls \
+            -e SPRING_DATASOURCE_USERNAME=postgres \
+            -e SPRING_DATASOURCE_PASSWORD=postgres \
             -e SERVER_PORT=5000 \
             call-service:smoke
 
