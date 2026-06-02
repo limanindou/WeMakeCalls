@@ -157,15 +157,30 @@ jobs:
       - name: Wait for Startup
         run: |
           echo "Waiting for call-service to start..."
+          HEALTH_URL="http://localhost:5000/agents/available"
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:5000/agents/available 2>/dev/null; then
+            TMP_BODY=$(mktemp)
+            set +e
+            HTTP_STATUS=$(curl -sS -o "$TMP_BODY" -w "%{http_code}" "$HEALTH_URL")
+            CURL_EXIT=$?
+            set -e
+
+            if [ "$CURL_EXIT" -eq 0 ] && [ "$HTTP_STATUS" = "200" ]; then
               echo "Service is healthy!"
+              rm -f "$TMP_BODY"
               exit 0
             fi
-            echo "Attempt $i/30 - waiting 2s..."
+
+            BODY_SNIPPET=$(tr -d '\n' < "$TMP_BODY" | head -c 200)
+            if [ "$CURL_EXIT" -ne 0 ]; then
+              echo "Attempt $i/30 - curl failed (exit=$CURL_EXIT, http=$HTTP_STATUS) - waiting 2s..."
+            else
+              echo "Attempt $i/30 - endpoint returned HTTP $HTTP_STATUS (body: ${BODY_SNIPPET:-<empty>}) - waiting 2s..."
+            fi
+            rm -f "$TMP_BODY"
             sleep 2
           done
-          echo "Service failed to start within 60 seconds"
+          echo "Service failed to start within 60 seconds (last endpoint: $HEALTH_URL)"
           docker logs call-service-smoke
           exit 1
 
